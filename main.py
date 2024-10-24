@@ -1,6 +1,7 @@
 import os
 from dotenv import load_dotenv
 import discord
+from discord import app_commands
 from discord.ext import commands
 
 #Load do .env
@@ -13,16 +14,21 @@ intents.message_content = True
 intents.members = True
 bot = commands.Bot(command_prefix='.', intents=intents)
 
-
-@bot.command()
-async def ola(ctx:commands.Context):
-    user = ctx.author
-    await ctx.reply(f'Olá {user.display_name}!')
-    
-
 @bot.event
 async def on_ready():
+    await bot.tree.sync()
     print('Estou pronto!')
+
+@bot.tree.command(description='Te envia um olá de volta :)')
+async def ola(interact:discord.Interaction):
+    await interact.response.send_message(f'Olá {interact.user.name}')
+
+@bot.tree.command(description='Te passa informações sobre um personagem')
+async def sobre(interact:discord.Integration, personagem:str):
+    ...
+
+
+
 
 
 
